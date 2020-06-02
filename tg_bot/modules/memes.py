@@ -195,6 +195,25 @@ def spongemocktext(bot: Bot, update: Update):
     with open('mocked{}.jpg'.format(randint), 'rb') as mockedphoto:
         message.reply_to_message.reply_photo(photo=mockedphoto, reply=message.reply_to_message)
     os.remove('mocked{}.jpg'.format(randint))
+	
+@run_async
+def stuttgarttext(bot: Bot, update: Update):
+    message = update.effective_message
+    if message.reply_to_message:
+        data = message.reply_to_message.text
+    else:
+        data = str('Haha yes, I know how to mock text.')
+
+    for mocked in glob.glob("mocked*"):
+        os.remove(mocked)
+    reply_text = data
+
+    randint = random.randint(1, 699)
+    magick = """convert stuttgart.jpg -gravity North -fill white -pointsize 97 -font Helvetica-Bold -stroke black -strokewidth 3 -annotate +0+150 "{}" mocked{}.jpg""".format(reply_text, randint)
+    os.system(magick)
+    with open('mocked{}.jpg'.format(randint), 'rb') as mockedphoto:
+        message.reply_to_message.reply_photo(photo=mockedphoto, reply=message.reply_to_message)
+    os.remove('mocked{}.jpg'.format(randint))
 
 @run_async
 def zalgotext(bot: Bot, update: Update):
@@ -333,6 +352,7 @@ ZALGO_HANDLER = DisableAbleCommandHandler("zalgofy", zalgotext)
 FORBES_HANDLER = DisableAbleCommandHandler("forbes", forbesify, admin_ok=True)
 DEEPFRY_HANDLER = DisableAbleCommandHandler("deepfry", deepfryer, admin_ok=True)
 SHOUT_HANDLER = DisableAbleCommandHandler("shout", shout, pass_args=True)
+STUTTGART_HANDLER = DisableAbleCommandHandler("allah", stuttgarttext, admin_ok=True)
 
 
 dispatcher.add_handler(MAFIA_HANDLER)
@@ -347,4 +367,5 @@ dispatcher.add_handler(FORBES_HANDLER)
 dispatcher.add_handler(DEEPFRY_HANDLER)
 dispatcher.add_handler(KIM_HANDLER)
 dispatcher.add_handler(HITLER_HANDLER)
+dispatcher.add_handler(STUTTGART_HANDLER)
 
